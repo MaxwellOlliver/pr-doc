@@ -21,7 +21,7 @@ const tabs = [
 	},
 	{
 		title: 'Data',
-		id: 'Data',
+		id: 'data',
 		component: FormData
 	}
 ];
@@ -32,7 +32,7 @@ const form = useForm({
 </script>
 <style scoped>
 .pr-doc__form-structure {
-	width: max(25vw, 400px);
+	width: max(30vw, 400px);
 	height: 100%;
 	background: #ffffff01;
 }

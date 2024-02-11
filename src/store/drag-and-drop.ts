@@ -7,8 +7,10 @@ import {
 } from 'lucide-vue-next';
 import { reactive } from 'vue';
 
-interface DragAndDropState {
+interface DragNDropStore {
 	draggingItem: string | null;
+	setDraggingItem: (payload: string | null) => void;
+	clearDraggingItem: () => void;
 }
 
 export const draggableFormItems = [
@@ -39,22 +41,12 @@ export const draggableFormItems = [
 	}
 ];
 
-export function useDragNDropStore() {
-	const store = reactive<DragAndDropState>({
-		draggingItem: null
-	});
-
-	function setDraggingItem(payload: string | null) {
-		store.draggingItem = payload;
+export const dragNDropStore = reactive<DragNDropStore>({
+	draggingItem: null,
+	setDraggingItem(payload: string | null) {
+		this.draggingItem = payload;
+	},
+	clearDraggingItem() {
+		this.draggingItem = null;
 	}
-
-	function clearDraggingItem() {
-		store.draggingItem = null;
-	}
-
-	return {
-		store,
-		setDraggingItem,
-		clearDraggingItem
-	};
-}
+});

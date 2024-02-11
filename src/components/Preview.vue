@@ -17,7 +17,7 @@ const {
 </script>
 <style scoped>
 .pr-doc__preview {
-	width: max(25vw, 400px);
+	width: max(30vw, 400px);
 	height: 100%;
 	background: v-bind(lightBackground);
 	padding: v-bind(normal);

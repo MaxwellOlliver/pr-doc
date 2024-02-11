@@ -5,14 +5,14 @@
 			:key="item.id"
 			class="draggable-items__item"
 			draggable="true"
-			@dragstart="setDraggingItem(item.id)"
+			@dragstart="handleDrag($event, item.id)"
 		>
 			<component :is="item.icon" class="item__icon" />
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { draggableFormItems, useDragNDropStore } from '../store/drag-and-drop';
+import { draggableFormItems, dragNDropStore } from '../store/drag-and-drop';
 import { theme } from '../theme';
 
 const {
@@ -20,7 +20,10 @@ const {
 	colors: { lightBackground, primary }
 } = theme;
 
-const { setDraggingItem } = useDragNDropStore();
+function handleDrag(e: DragEvent, item: string) {
+	e.dataTransfer?.setData('itemID', item);
+	dragNDropStore.setDraggingItem(item);
+}
 </script>
 <style>
 .pr-doc__draggable-items {

@@ -20,9 +20,14 @@
 			@blur="isFocused = false"
 			@input="handleChange"
 		/>
-		<label :for="_id" :class="{ '--focused': isFocused || !!_value }">{{
-			label
-		}}</label>
+		<label
+			:for="_id"
+			:class="{
+				'--focused': isFocused || !!_value
+			}"
+		>
+			{{ label }}
+		</label>
 	</div>
 </template>
 <script setup lang="ts">
@@ -34,13 +39,12 @@ interface InputProps {
 	label?: string;
 	value?: InputHTMLAttributes['value'];
 	onChange?: InputHTMLAttributes['onChange'];
-	placeholder?: string;
 	id?: string;
 	asTextarea?: boolean;
 }
 
 const {
-	colors: { background },
+	colors: { background, secondary },
 	fontSizes: { small }
 } = theme;
 
@@ -62,6 +66,7 @@ function handleChange(e: Event) {
 	flex-direction: column;
 	width: 100%;
 	position: relative;
+	margin-top: 0.325rem;
 }
 
 input {
@@ -83,10 +88,15 @@ textarea {
 	width: 100%;
 	color: #fff;
 	padding: 0 1rem;
+	transition: border-color 0.2s ease-in-out;
+}
+
+.text-input:focus {
+	border-color: v-bind(secondary);
 }
 
 .text-input::placeholder {
-	color: rgba(255, 255, 255, 0.5);
+	visibility: hidden;
 }
 
 label {
@@ -97,15 +107,21 @@ label {
 	transition:
 		left 0.2s ease-in-out,
 		top 0.2s ease-in-out,
-		font-size 0.2s ease-in-out;
+		font-size 0.2s ease-in-out,
+		color 0.2s ease-in-out;
 	padding: 0.25rem;
 	background: v-bind(background);
 	transform: translateY(-50%);
 	border-radius: 5px;
+	pointer-events: none;
 }
 
 label.--focused {
 	top: 0px;
 	font-size: v-bind(small);
+}
+
+.text-input:focus + label {
+	color: v-bind(secondary);
 }
 </style>
