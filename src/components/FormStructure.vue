@@ -32,7 +32,7 @@ const form = useForm({
 </script>
 <style scoped>
 .pr-doc__form-structure {
-	width: max(30vw, 400px);
+	width: 100%;
 	height: 100%;
 	background: #ffffff01;
 }

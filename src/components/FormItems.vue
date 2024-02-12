@@ -3,8 +3,11 @@
 		<div
 			v-for="item in draggableFormItems"
 			:key="item.id"
-			class="draggable-items__item"
-			draggable="true"
+			:class="[
+				'draggable-items__item',
+				{ '--disabled': formSectionsId.includes(item.id) }
+			]"
+			:draggable="!formSectionsId.includes(item.id)"
 			@dragstart="handleDrag($event, item.id)"
 		>
 			<component :is="item.icon" class="item__icon" />
@@ -13,12 +16,17 @@
 </template>
 <script setup lang="ts">
 import { draggableFormItems, dragNDropStore } from '../store/drag-and-drop';
+import { formStructureStore } from '../store/form-structure';
 import { theme } from '../theme';
 
 const {
 	spacings: { small },
 	colors: { lightBackground, primary }
 } = theme;
+
+const formSectionsId = formStructureStore.formSections.map(
+	(section) => section.id
+);
 
 function handleDrag(e: DragEvent, item: string) {
 	e.dataTransfer?.setData('itemID', item);
@@ -42,6 +50,11 @@ function handleDrag(e: DragEvent, item: string) {
 
 .draggable-items__item:active {
 	cursor: grabbing;
+}
+
+.draggable-items__item.--disabled {
+	cursor: not-allowed !important;
+	opacity: 0.5;
 }
 
 .item__icon {

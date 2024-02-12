@@ -4,7 +4,6 @@
 			v-if="!asTextarea"
 			:id="_id"
 			class="text-input"
-			v-bind="props"
 			:value="_value"
 			@focus="isFocused = true"
 			@blur="isFocused = false"
@@ -14,7 +13,6 @@
 			v-else
 			:id="_id"
 			class="text-input"
-			v-bind="props"
 			:value="_value"
 			@focus="isFocused = true"
 			@blur="isFocused = false"
@@ -32,15 +30,18 @@
 </template>
 <script setup lang="ts">
 import { useId } from '../hooks/useId';
-import { type InputHTMLAttributes, ref } from 'vue';
+import { type InputHTMLAttributes, ref, defineEmits } from 'vue';
 import { theme } from '../theme';
 
 interface InputProps {
 	label?: string;
 	value?: InputHTMLAttributes['value'];
-	onChange?: InputHTMLAttributes['onChange'];
 	id?: string;
 	asTextarea?: boolean;
+}
+
+interface InputEmits {
+	(e: 'change', value: string): void;
 }
 
 const {
@@ -48,16 +49,18 @@ const {
 	fontSizes: { small }
 } = theme;
 
-const { label, id, asTextarea, onChange, ...props } = defineProps<InputProps>();
+const { label, id, asTextarea, value } = defineProps<InputProps>();
+
+const emit = defineEmits<InputEmits>();
 
 const _id = id ?? useId();
-const _value = ref(props.value);
+const _value = ref(value);
 const isFocused = ref(false);
 
 function handleChange(e: Event) {
 	const target = e.target as HTMLInputElement;
 	_value.value = target.value;
-	onChange?.(e);
+	emit('change', target.value);
 }
 </script>
 <style scoped>
