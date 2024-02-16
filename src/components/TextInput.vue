@@ -27,6 +27,7 @@
 			{{ label }}
 		</label>
 	</div>
+	{{ errorMessage }}
 </template>
 <script setup lang="ts">
 import { useId } from '../hooks/useId';
@@ -37,11 +38,12 @@ interface InputProps {
 	label?: string;
 	value?: InputHTMLAttributes['value'];
 	id?: string;
+	errorMessage?: string;
 	asTextarea?: boolean;
 }
 
 interface InputEmits {
-	(e: 'change', value: string): void;
+	(e: 'input', value: string): void;
 }
 
 const {
@@ -60,7 +62,7 @@ const isFocused = ref(false);
 function handleChange(e: Event) {
 	const target = e.target as HTMLInputElement;
 	_value.value = target.value;
-	emit('change', target.value);
+	emit('input', target.value);
 }
 </script>
 <style scoped>

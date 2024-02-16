@@ -17,3 +17,5 @@ export interface Tab {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	component: DefineComponent<Record<string, never>, Record<string, never>, any>;
 }
+
+export type FormValue = string | number | boolean | object | undefined;

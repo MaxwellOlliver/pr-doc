@@ -1,0 +1,39 @@
+<template>
+	<div class="form-provider__wrapper">
+		<form style="height: 100%">
+			<slot />
+		</form>
+	</div>
+</template>
+<script setup lang="ts">
+import { formDataStore } from '../../store/form-data';
+import { computed, watch } from 'vue';
+import { summarySchema } from '../../validations';
+
+const data = computed(() => formDataStore.data);
+const errors = computed(() => formDataStore.errors);
+
+watch(data.value, () => {
+	const result = summarySchema.safeParse(data.value);
+
+	if (!result.success) {
+		formDataStore.clearErrors();
+
+		result.error.issues.forEach((issue) => {
+			formDataStore.setError(issue.path[0] as string, issue.message);
+		});
+		return;
+	}
+
+	formDataStore.clearErrors();
+});
+
+watch(errors.value, () => {
+	if (Object.keys(errors.value).length > 0) {
+		formDataStore.setIsValid(false);
+	} else {
+		formDataStore.setIsValid(true);
+	}
+});
+</script>
+<style></style>

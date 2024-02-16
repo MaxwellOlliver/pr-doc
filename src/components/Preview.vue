@@ -4,9 +4,13 @@
 			<ScanEye />
 			<h2 class="header__title">Preview</h2>
 		</div>
+		<div class="preview__body">
+			<span>{{ formDataStore.data['summaryDescription'] }}</span>
+		</div>
 	</div>
 </template>
 <script setup lang="ts">
+import { formDataStore } from '../store/form-data';
 import { theme } from '../theme';
 import { ScanEye } from 'lucide-vue-next';
 

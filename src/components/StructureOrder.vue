@@ -6,12 +6,15 @@
 		@dragenter.prevent
 	>
 		<div
-			v-for="section in formSections.sort((a, b) => a.order - b.order)"
+			v-for="section in formSections"
 			:id="section.id"
 			:key="section.id"
 			class="sections__item"
 			draggable="true"
-			@dragstart="handleDragStart($event, section.id)"
+			@dragstart="handleDragStart($event, section.order)"
+			@drop="onDropInsideItem($event, section.order)"
+			@dragover.prevent
+			@dragenter.prevent
 		>
 			<div class="item__data">
 				<component :is="section.icon" class="data__icon" />
@@ -26,29 +29,41 @@
 </template>
 <script setup lang="ts">
 import { AlignJustify, Trash2 } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { formStructureStore } from '../store/form-structure';
 import { theme } from '../theme';
+import { DraggableItem } from '../store/types';
 
 const {
 	spacings,
 	colors: { lightBackground, secondary }
 } = theme;
 
-const draggingSection = ref<string | null>(null);
+const formSections = computed<DraggableItem[]>(
+	() => formStructureStore.formSections
+);
 
-const formSections = computed(() => formStructureStore.formSections);
+function onDropInsideItem(e: DragEvent, itemListOrder: number) {
+	e.stopPropagation();
+	console.log('teste');
+
+	const order = e.dataTransfer?.getData('order') as string;
+
+	if (order) formStructureStore.moveFormSection(Number(order), itemListOrder);
+}
 
 function onDrop(e: DragEvent) {
 	const itemID = e.dataTransfer?.getData('itemID') as string;
+	const order = e.dataTransfer?.getData('order') as string;
 	const formSectionsId = formStructureStore.formSections.map(
 		(section) => section.id
 	);
 
-	if ((e.target as HTMLDivElement).id) {
-		const targetID = (e.target as HTMLDivElement).id;
-
-		formStructureStore.moveFormSection(itemID, targetID);
+	if (order && formSections.value.length > 0) {
+		formStructureStore.moveFormSection(
+			Number(order),
+			formSections.value.slice(-1)[0].order
+		);
 		return;
 	}
 
@@ -57,14 +72,12 @@ function onDrop(e: DragEvent) {
 	formStructureStore.addFormSection(itemID);
 }
 
-function handleDragStart(e: DragEvent, itemId: string) {
+function handleDragStart(e: DragEvent, order: number) {
 	if (!e.dataTransfer) return;
 
 	e.dataTransfer.dropEffect = 'move';
 	e.dataTransfer.effectAllowed = 'move';
-	e.dataTransfer.setData('itemID', itemId);
-
-	draggingSection.value = itemId;
+	e.dataTransfer.setData('order', String(order));
 }
 </script>
 <style scoped>

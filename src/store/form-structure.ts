@@ -5,7 +5,8 @@ import { draggableFormItems } from './drag-and-drop';
 interface FormStructureStore {
 	formSections: DraggableItem[];
 	addFormSection: (section: string) => void;
-	moveFormSection: (from: string, to: string) => void;
+	moveFormSection: (from: number, to: number) => void;
+	updateAndOrder: (orderUpdated: DraggableItem[]) => void;
 }
 
 export const formStructureStore = reactive<FormStructureStore>({
@@ -23,30 +24,35 @@ export const formStructureStore = reactive<FormStructureStore>({
 		};
 		this.formSections = [...this.formSections, _section];
 	},
-	moveFormSection(fromId: string, toId: string) {
-		const from = this.formSections.find((item) => item.id === fromId);
-		const to = this.formSections.find((item) => item.id === toId);
+	updateAndOrder(orderUpdated: DraggableItem[]) {
+		this.formSections = orderUpdated.sort((a, b) => a.order - b.order);
+	},
+	moveFormSection(from: number, to: number) {
+		const fromElement = this.formSections.find((item) => item.order === from);
+		const toElement = this.formSections.find((item) => item.order === to);
 
-		if (!from || !to) {
-			throw new Error(`Section with id ${fromId} or ${toId} not found`);
+		if (!fromElement || !toElement) {
+			return;
 		}
 
-		this.formSections = this.formSections.map((item) => {
-			if (item.id === fromId) {
+		const formSectionsOrderUpdated = this.formSections.map((item) => {
+			if (item.id === fromElement.id) {
 				return {
 					...item,
-					order: to.order
+					order: to
 				};
 			}
 
-			if (item.id === toId) {
+			if (item.id === toElement.id) {
 				return {
 					...item,
-					order: from.order
+					order: from
 				};
 			}
 
 			return item;
 		});
+
+		this.updateAndOrder(formSectionsOrderUpdated);
 	}
 });

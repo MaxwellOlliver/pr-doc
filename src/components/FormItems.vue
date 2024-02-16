@@ -15,7 +15,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { draggableFormItems, dragNDropStore } from '../store/drag-and-drop';
+import { draggableFormItems } from '../store/drag-and-drop';
+import { computed } from 'vue';
 import { formStructureStore } from '../store/form-structure';
 import { theme } from '../theme';
 
@@ -24,13 +25,12 @@ const {
 	colors: { lightBackground, primary }
 } = theme;
 
-const formSectionsId = formStructureStore.formSections.map(
-	(section) => section.id
+const formSectionsId = computed(() =>
+	formStructureStore.formSections.map((section) => section.id)
 );
 
 function handleDrag(e: DragEvent, item: string) {
 	e.dataTransfer?.setData('itemID', item);
-	dragNDropStore.setDraggingItem(item);
 }
 </script>
 <style>
