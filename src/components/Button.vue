@@ -29,6 +29,7 @@ const btnType = computed(() => `--${variant}-${color}`);
 	color: v-bind(background);
 }
 .--outline-primary {
+	border: 1px solid !important;
 	border-color: v-bind(primary);
 	color: v-bind(primary);
 	background: transparent;
@@ -38,6 +39,7 @@ const btnType = computed(() => `--${variant}-${color}`);
 	color: v-bind(background);
 }
 .--outline-secondary {
+	border: 1px solid !important;
 	border-color: v-bind(secondary);
 	color: v-bind(secondary);
 	background: transparent;
@@ -45,7 +47,7 @@ const btnType = computed(() => `--${variant}-${color}`);
 </style>
 <style scoped>
 button {
-	padding: 0 2rem;
+	padding: 0 1rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -56,6 +58,11 @@ button {
 	font-size: 1rem;
 	font-weight: bold;
 	transition: filter 0.3s;
+}
+
+button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 
 button:hover {

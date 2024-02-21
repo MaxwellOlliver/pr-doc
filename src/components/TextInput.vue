@@ -4,7 +4,7 @@
 			v-if="!asTextarea"
 			:id="_id"
 			class="text-input"
-			:value="_value"
+			:value="value"
 			@focus="isFocused = true"
 			@blur="isFocused = false"
 			@input="handleChange"
@@ -13,7 +13,7 @@
 			v-else
 			:id="_id"
 			class="text-input"
-			:value="_value"
+			:value="value"
 			@focus="isFocused = true"
 			@blur="isFocused = false"
 			@input="handleChange"
@@ -21,7 +21,7 @@
 		<label
 			:for="_id"
 			:class="{
-				'--focused': isFocused || !!_value
+				'--focused': isFocused || !!value
 			}"
 		>
 			{{ label }}
@@ -31,7 +31,7 @@
 </template>
 <script setup lang="ts">
 import { useId } from '../hooks/useId';
-import { type InputHTMLAttributes, ref, defineEmits } from 'vue';
+import { type InputHTMLAttributes, ref } from 'vue';
 import { theme } from '../theme';
 
 interface InputProps {
@@ -56,12 +56,10 @@ const { label, id, asTextarea, value } = defineProps<InputProps>();
 const emit = defineEmits<InputEmits>();
 
 const _id = id ?? useId();
-const _value = ref(value);
 const isFocused = ref(false);
 
 function handleChange(e: Event) {
 	const target = e.target as HTMLInputElement;
-	_value.value = target.value;
 	emit('input', target.value);
 }
 </script>
@@ -119,6 +117,7 @@ label {
 	transform: translateY(-50%);
 	border-radius: 5px;
 	pointer-events: none;
+	line-height: 1;
 }
 
 label.--focused {

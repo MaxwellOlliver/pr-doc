@@ -1,23 +1,25 @@
 import { computed } from 'vue';
 import { formDataStore } from '../store/form-data';
-import { FormValue } from '../store/types';
+import { FormRawValue } from '../store/types';
 
-interface UseFormElement {
-	readonly setValue: (value: FormValue) => void;
-	readonly value: ReturnType<typeof computed<FormValue>>;
+interface UseFormElement<T = FormRawValue> {
+	readonly setValue: (value: FormRawValue) => void;
+	readonly value: ReturnType<typeof computed<T>>;
 	readonly error: ReturnType<typeof computed<{ message: string }>>;
 }
 
-export function useFormElement(
+export function useFormElement<T = FormRawValue>(
 	name: string,
-	initialValue?: string
-): UseFormElement {
+	initialValue?: FormRawValue
+): UseFormElement<T> {
 	const error = computed(() => formDataStore.errors[name] ?? {});
-	const value = computed(() => formDataStore.data[name] ?? initialValue);
+	const value = computed<T>(
+		() => (formDataStore.data[name] ?? initialValue) as T
+	);
 
 	return {
-		setValue: (value: FormValue) => formDataStore.setValue(name, value),
-		value: value,
-		error: error
+		setValue: (value: FormRawValue) => formDataStore.setValue(name, value),
+		value,
+		error
 	};
 }

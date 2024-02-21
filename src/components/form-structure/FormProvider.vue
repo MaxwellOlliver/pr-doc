@@ -31,9 +31,21 @@ watch(data.value, () => {
 watch(errors.value, () => {
 	if (Object.keys(errors.value).length > 0) {
 		formDataStore.setIsValid(false);
-	} else {
-		formDataStore.setIsValid(true);
+		return;
 	}
+
+	formDataStore.setIsValid(true);
 });
 </script>
-<style></style>
+<style>
+.form-provider__wrapper {
+	display: flex;
+	height: 100%;
+	width: 100%;
+}
+
+.form-provider__wrapper form {
+	width: 100%;
+	height: 100%;
+}
+</style>

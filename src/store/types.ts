@@ -18,4 +18,14 @@ export interface Tab {
 	component: DefineComponent<Record<string, never>, Record<string, never>, any>;
 }
 
-export type FormValue = string | number | boolean | object | undefined;
+export type FormValue = string | number | boolean | object;
+export type FormRawValue = string | number | boolean | FormValue[] | undefined;
+export type FormData = {
+	summary: {
+		description: string;
+	};
+	issue: {
+		taskId: string;
+	};
+	changes: { relativePath: string; description: string }[];
+};
