@@ -1,5 +1,7 @@
 <template>
-	<div class="pr-doc__draggable-items">
+	<div
+		:class="[{ '--show': show, '--hide': !show }, 'pr-doc__draggable-items']"
+	>
 		<div
 			v-for="item in draggableFormItems"
 			:key="item.id"
@@ -8,6 +10,9 @@
 				{ '--disabled': formSectionsId.includes(item.id) }
 			]"
 			:draggable="!formSectionsId.includes(item.id)"
+			:style="{
+				transitionDelay: `${draggableFormItems.findIndex((i) => i.id === item.id) * 0.1}s`
+			}"
 			@dragstart="handleDrag($event, item.id)"
 		>
 			<component :is="item.icon" class="item__icon" />
@@ -19,6 +24,12 @@ import { draggableFormItems } from '../store/drag-and-drop';
 import { computed } from 'vue';
 import { formStructureStore } from '../store/form-structure';
 import { theme } from '../theme';
+
+interface FormItemsProps {
+	show: boolean;
+}
+
+const { show } = defineProps<FormItemsProps>();
 
 const {
 	spacings: { small },
@@ -46,6 +57,14 @@ function handleDrag(e: DragEvent, item: string) {
 	border-radius: 5px;
 	background: v-bind(lightBackground);
 	cursor: pointer;
+	opacity: 0;
+	transform: scale(0);
+	transition: all 0.3s;
+}
+
+.pr-doc__draggable-items.--show .draggable-items__item {
+	opacity: 1;
+	transform: scale(1);
 }
 
 .draggable-items__item:active {

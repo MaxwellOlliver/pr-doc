@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div class="pr-doc__preview">
 		<div class="preview__header">
@@ -26,7 +27,7 @@ import { ScanEye, Copy } from 'lucide-vue-next';
 import Button from './Button.vue';
 
 const {
-	colors: { lightBackground },
+	colors: { lightBackground, primary, secondary },
 	spacings: { normal, small }
 } = theme;
 
@@ -46,15 +47,16 @@ const markdownData = computed(() => {
 ${data.value.summary ? `**Summary**\n` : ''}
 ${data.value.summary ? `${data.value.summary.description}\n` : ''}
 ${data.value.issue?.taskId ? `- **Issue**: #${data.value.issue.taskId}\n\n` : ''}
+${data.value.issue?.prId ? `- **Pull Request**: !${data.value.issue.prId}\n\n` : ''}
 ${data.value.changes?.length ? '**Changes**\n' : ''}
 ${
 	data.value.changes?.length
 		? data.value.changes
 				?.map(
 					(change) =>
-						`- \`\`\`${change.relativePath}\`\`\`: ${change.description}\n`
+						`- \`\`\`${change.relativePath}\`\`\`:\n${change.description}\n`
 				)
-				.join('')
+				.join('\n')
 		: ''
 }
 	`;
@@ -95,6 +97,7 @@ function handleCopy() {
 
 .preview__body ul {
 	padding-left: v-bind(normal);
+	margin-bottom: v-bind(normal);
 }
 
 .preview__body p {
@@ -102,9 +105,31 @@ function handleCopy() {
 	margin-bottom: v-bind(normal);
 }
 
+.preview__body a {
+	word-break: break-all;
+	margin-bottom: v-bind(normal);
+	color: v-bind(primary);
+}
+
+.preview__body a:visited {
+	color: v-bind(secondary);
+}
+
+.preview__body li p {
+	margin-bottom: 0;
+}
+
 .hljs {
 	padding: v-bind(small) !important;
-	margin: v-bind(small) 0 !important;
+	margin-bottom: v-bind(normal) 0 !important;
+	border-radius: 5px;
+}
+
+.preview__body code:not(.hljs) {
+	background-color: #333;
+	width: fit-content;
+	padding: 0.1rem 0.5rem;
+	margin: v-bind(normal) 0;
 	border-radius: 5px;
 }
 </style>

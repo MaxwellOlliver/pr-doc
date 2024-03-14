@@ -10,7 +10,7 @@ import { formDataStore } from '../../store/form-data';
 import { computed, watch } from 'vue';
 import { summarySchema } from '../../validations';
 
-const data = computed(() => formDataStore.data);
+const data = computed(() => formDataStore.getTransformedRawData());
 const errors = computed(() => formDataStore.errors);
 
 watch(data.value, () => {

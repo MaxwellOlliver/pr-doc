@@ -1,7 +1,9 @@
 import z from 'zod';
 
 export const summarySchema = z.object({
-	summaryDescription: z.string().min(10).max(1000)
+	summary: z.object({
+		description: z.string().min(10).max(1000)
+	})
 });
 
 export const issueSchema = z.object({

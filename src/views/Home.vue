@@ -1,12 +1,10 @@
 <template>
 	<div class="app-container">
-		<FormItems />
 		<FormStructure />
 		<Preview />
 	</div>
 </template>
 <script setup lang="ts">
-import FormItems from '../components/FormItems.vue';
 import FormStructure from '../components/FormStructure.vue';
 import Preview from '../components/Preview.vue';
 import { theme } from '../theme/index';

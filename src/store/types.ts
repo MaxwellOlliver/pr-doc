@@ -26,6 +26,7 @@ export type FormData = {
 	};
 	issue: {
 		taskId: string;
+		prId: string;
 	};
 	changes: { relativePath: string; description: string }[];
 };

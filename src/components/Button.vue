@@ -1,5 +1,5 @@
 <template>
-	<button :class="[variants[btnType]]" @click="onClick">
+	<button type="button" :class="[variants[btnType]]" @click="onClick">
 		<slot />
 	</button>
 </template>
@@ -47,11 +47,13 @@ const btnType = computed(() => `--${variant}-${color}`);
 </style>
 <style scoped>
 button {
+	width: fit-content;
 	padding: 0 1rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 45px;
+	min-height: 45px;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;

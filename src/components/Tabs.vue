@@ -37,12 +37,18 @@ interface TabsProps {
 	variant?: 'default' | 'button';
 }
 
+interface TabsEmits {
+	(e: 'change', value: string): void;
+}
+
 const {
 	colors: { primary },
 	spacings: { normal }
 } = theme;
 
 const { tabs, defaultActiveTab, variant } = defineProps<TabsProps>();
+
+const emit = defineEmits<TabsEmits>();
 
 const _variant = computed(() => variant ?? 'default');
 
@@ -71,6 +77,7 @@ function calculateFloatBarPosition() {
 
 function handleChangeTab(id: string) {
 	currentTab.value = id;
+	emit('change', id);
 	calculateFloatBarPosition();
 }
 

@@ -5,7 +5,10 @@
 import Home from './views/Home.vue';
 import { theme } from './theme';
 
-const { primary } = theme.fonts;
+const {
+	fonts: { primary },
+	colors: { lightBackground }
+} = theme;
 </script>
 <style>
 * {
@@ -40,5 +43,24 @@ h4,
 h5,
 h6 {
 	font-family: v-bind(primary);
+}
+
+::-webkit-scrollbar {
+	width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: v-bind(lightBackground);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #ccc;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #cccccc80;
 }
 </style>

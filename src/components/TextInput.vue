@@ -8,6 +8,7 @@
 			@focus="isFocused = true"
 			@blur="isFocused = false"
 			@input="handleChange"
+			@keypress.enter="$emit('next')"
 		/>
 		<textarea
 			v-else
@@ -44,6 +45,7 @@ interface InputProps {
 
 interface InputEmits {
 	(e: 'input', value: string): void;
+	(e: 'next'): void;
 }
 
 const {

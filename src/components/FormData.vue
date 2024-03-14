@@ -50,6 +50,5 @@ const tabs = computed(() =>
 
 .wrapper__title {
 	font-weight: 500;
-	margin-bottom: v-bind('spacings.small');
 }
 </style>
