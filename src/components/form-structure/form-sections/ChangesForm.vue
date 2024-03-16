@@ -1,6 +1,6 @@
 <template>
 	<div class="form-section__wrapper">
-		<h3 class="wrapper__title">Issue</h3>
+		<h3 class="wrapper__title">Changes</h3>
 		<TextInput
 			label="Relative Path"
 			:value="relativePath"

@@ -25,10 +25,12 @@ import { formDataStore } from '../store/form-data';
 import { theme } from '../theme';
 import { ScanEye, Copy } from 'lucide-vue-next';
 import Button from './Button.vue';
+import { FormDataType } from '../store/types';
+import { formStructureStore } from '../store/form-structure';
 
 const {
 	colors: { lightBackground, primary, secondary },
-	spacings: { normal, small }
+	spacings: { normal, small, large }
 } = theme;
 
 const markdown = new MarkdownIt({
@@ -42,26 +44,37 @@ const markdown = new MarkdownIt({
 	.use(MarkdownItTOC);
 
 const data = computed(() => formDataStore.getTransformedRawData());
-const markdownData = computed(() => {
-	let output = `
-${data.value.summary ? `**Summary**\n` : ''}
-${data.value.summary ? `${data.value.summary.description}\n` : ''}
-${data.value.issue?.taskId ? `- **Issue**: #${data.value.issue.taskId}\n\n` : ''}
-${data.value.issue?.prId ? `- **Pull Request**: !${data.value.issue.prId}\n\n` : ''}
-${data.value.changes?.length ? '**Changes**\n' : ''}
-${
-	data.value.changes?.length
-		? data.value.changes
-				?.map(
-					(change) =>
-						`- \`\`\`${change.relativePath}\`\`\`:\n${change.description}\n`
-				)
-				.join('\n')
-		: ''
-}
-	`;
 
-	return output;
+function getTextByFormItem(formItem: keyof FormDataType) {
+	switch (formItem) {
+		case 'summary':
+			return `${data.value.summary ? `**Summary**\n` : ''}${data.value.summary ? `${data.value.summary.description}\n\n` : ''}`;
+		case 'issue':
+			return `${data.value.summary ? `**References**\n` : ''}${data.value.issue?.taskId ? `- **Issue**: #${data.value.issue.taskId}\n\n` : ''}${data.value.issue?.prId ? `- **Pull Request**: !${data.value.issue.prId}\n\n` : ''}`;
+		case 'changes':
+			return `${data.value.changes?.length ? '**Changes**\n' : ''}${
+				data.value.changes?.length
+					? data.value.changes
+							?.map(
+								(change) =>
+									`- \`\`\`${change.relativePath}\`\`\`: ${change.description}\n`
+							)
+							.join('\n')
+					: ''
+			}\n\n`;
+		case 'importantNotes':
+			return `${data.value.importantNotes ? `\\*\\* **Important Notes** \\*\\*\n` : ''}${data.value.importantNotes.description ? `${data.value.importantNotes.description}\n\n` : ''}`;
+		default:
+			return '';
+	}
+}
+
+const markdownData = computed(() => {
+	let output = formStructureStore.formSections.map((item) => {
+		return getTextByFormItem(item.id as keyof FormDataType);
+	});
+
+	return output.join('');
 });
 
 function handleCopy() {
@@ -96,7 +109,7 @@ function handleCopy() {
 }
 
 .preview__body ul {
-	padding-left: v-bind(normal);
+	padding-left: v-bind(large);
 	margin-bottom: v-bind(normal);
 }
 

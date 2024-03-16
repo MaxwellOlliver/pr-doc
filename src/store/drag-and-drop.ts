@@ -35,7 +35,7 @@ export const draggableFormItems = [
 		icon: FileImage
 	},
 	{
-		id: 'important-notes',
+		id: 'importantNotes',
 		name: 'Important Notes',
 		icon: AlertCircle
 	}

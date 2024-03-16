@@ -7,6 +7,7 @@ interface FormStructureStore {
 	addFormSection: (section: string) => void;
 	moveFormSection: (from: number, to: number) => void;
 	updateAndOrder: (orderUpdated: DraggableItem[]) => void;
+	removeFormSection: (section: string) => void;
 }
 
 export const formStructureStore = reactive<FormStructureStore>({
@@ -54,5 +55,9 @@ export const formStructureStore = reactive<FormStructureStore>({
 		});
 
 		this.updateAndOrder(formSectionsOrderUpdated);
+	},
+	removeFormSection(sectionId) {
+		const sections = this.formSections;
+		this.formSections = sections.filter((item) => item.id !== sectionId);
 	}
 });

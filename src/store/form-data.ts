@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-import { FormData, FormRawValue, FormValue } from './types';
+import { FormDataType, FormRawValue, FormValue } from './types';
 
 interface FormDataStore {
 	data: Record<string, FormRawValue>;
@@ -10,7 +10,7 @@ interface FormDataStore {
 	clearErrors: () => void;
 	setError: (name: string, message: string, replaceAll?: boolean) => void;
 	clearFieldError: (name: string) => void;
-	getTransformedRawData: () => FormData;
+	getTransformedRawData: () => FormDataType;
 }
 
 export const formDataStore = reactive<FormDataStore>({
@@ -40,7 +40,7 @@ export const formDataStore = reactive<FormDataStore>({
 			}, result);
 		});
 
-		return result as FormData;
+		return result as FormDataType;
 	},
 	setIsValid(value: boolean) {
 		this.isValid = value;

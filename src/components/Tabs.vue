@@ -16,6 +16,7 @@
 				:key="tab.id"
 				:class="[{ '--current': currentTab === tab.id }, 'header__tab']"
 				:data-tab="tab.id"
+				:data-disabled="tab.disabled"
 				@click="handleChangeTab(tab.id)"
 			>
 				{{ tab.title }}
@@ -106,6 +107,10 @@ onMounted(() => {
 		background-color 0.3s;
 	z-index: 2;
 	font-size: 14px;
+}
+.header__tab[data-disabled='true'] {
+	pointer-events: none;
+	opacity: 0.5;
 }
 
 .--default-tabs > .tabs__header > .header__float-bar {

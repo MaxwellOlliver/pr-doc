@@ -8,6 +8,7 @@ import { computed } from 'vue';
 import SummaryForm from './form-structure/form-sections/SummaryForm.vue';
 import IssueForm from './form-structure/form-sections/IssueForm.vue';
 import ChangesForm from './form-structure/form-sections/ChangesForm.vue';
+import ImportantNotesForm from './form-structure/form-sections/ImportantNotesForm.vue';
 import { formStructureStore } from '../store/form-structure';
 import { theme } from '../theme';
 import Tabs from './Tabs.vue';
@@ -18,7 +19,8 @@ const { spacings } = theme;
 const sectionComponent: Record<string, Tab['component']> = {
 	summary: SummaryForm,
 	issue: IssueForm,
-	changes: ChangesForm
+	changes: ChangesForm,
+	importantNotes: ImportantNotesForm
 };
 
 const tabs = computed(() =>

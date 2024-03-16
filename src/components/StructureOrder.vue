@@ -21,7 +21,9 @@
 				<p>{{ section.name }}</p>
 			</div>
 			<div class="item__actions">
-				<Trash2 class="actions__icon" />
+				<div @click="handleRemoveSection(section.id)">
+					<Trash2 class="actions__icon" />
+				</div>
 				<AlignJustify class="actions__icon" />
 			</div>
 		</div>
@@ -45,7 +47,6 @@ const formSections = computed<DraggableItem[]>(
 
 function onDropInsideItem(e: DragEvent, itemListOrder: number) {
 	e.stopPropagation();
-	console.log('teste');
 
 	const order = e.dataTransfer?.getData('order') as string;
 
@@ -78,6 +79,11 @@ function handleDragStart(e: DragEvent, order: number) {
 	e.dataTransfer.dropEffect = 'move';
 	e.dataTransfer.effectAllowed = 'move';
 	e.dataTransfer.setData('order', String(order));
+}
+
+function handleRemoveSection(sectionId: string) {
+	console.log('chamou', sectionId);
+	formStructureStore.removeFormSection(sectionId);
 }
 </script>
 <style scoped>

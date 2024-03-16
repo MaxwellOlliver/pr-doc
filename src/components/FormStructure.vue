@@ -16,10 +16,11 @@ import FormData from './FormData.vue';
 import Tabs from './Tabs.vue';
 
 import FormProvider from './form-structure/FormProvider.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import FormItems from './FormItems.vue';
+import { formStructureStore } from '../store/form-structure';
 
-const tabs = [
+const tabs = computed(() => [
 	{
 		title: 'Structure',
 		id: 'structure',
@@ -28,14 +29,14 @@ const tabs = [
 	{
 		title: 'Data',
 		id: 'data',
-		component: FormData
+		component: FormData,
+		disabled: formStructureStore.formSections.length === 0
 	}
-];
+]);
 
-const currentTab = ref(tabs[0].id);
+const currentTab = ref(tabs.value[0].id);
 
 function handleCurrentTabChange(tab: string) {
-	console.log(tab);
 	currentTab.value = tab;
 }
 </script>

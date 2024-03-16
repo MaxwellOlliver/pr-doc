@@ -16,12 +16,16 @@ export interface Tab {
 	id: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	component: DefineComponent<Record<string, never>, Record<string, never>, any>;
+	disabled?: boolean;
 }
 
 export type FormValue = string | number | boolean | object;
 export type FormRawValue = string | number | boolean | FormValue[] | undefined;
-export type FormData = {
+export type FormDataType = {
 	summary: {
+		description: string;
+	};
+	importantNotes: {
 		description: string;
 	};
 	issue: {

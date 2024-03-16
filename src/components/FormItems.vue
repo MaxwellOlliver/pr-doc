@@ -59,7 +59,9 @@ function handleDrag(e: DragEvent, item: string) {
 	cursor: pointer;
 	opacity: 0;
 	transform: scale(0);
-	transition: all 0.3s;
+	transition:
+		opacity 0.3s,
+		transform 0.3s;
 }
 
 .pr-doc__draggable-items.--show .draggable-items__item {
@@ -73,7 +75,7 @@ function handleDrag(e: DragEvent, item: string) {
 
 .draggable-items__item.--disabled {
 	cursor: not-allowed !important;
-	opacity: 0.5;
+	filter: brightness(0.6);
 }
 
 .item__icon {
